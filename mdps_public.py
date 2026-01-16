@@ -4,10 +4,13 @@ Created on Fri Jan  16 16:01:15 2026
 
 @author: Thilak
 """
-
+import numpy as np
+import pandas as pd
 import pickle
+import scikit-learn
 import streamlit as st
 from streamlit_option_menu import option_menu
+
 
 
 # loading the saved models
