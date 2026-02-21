@@ -110,43 +110,7 @@ if (selected == 'Diabetes Prediction'):
     def clear_form():
         for key, value in defaults.items():
             st.session_state[key] = value
-
-    # -----------------------------------------------------
-    # 3️⃣ SAMPLE PATIENT DATA (FOR DEMO PURPOSE)
-    # -----------------------------------------------------
-    # Helps users quickly test the model with realistic data
-    DIABETES_SAMPLES = {
-        "Select Sample": None,
-    
-        "1️⃣ Sample Data": {
-            "Pregnancies": 3, "Glucose": 126, "BloodPressure": 88,
-            "SkinThickness": 41, "Insulin": 235, "BMI": 39.3,
-            "DPF": 0.704, "Age": 27
-        },
-    
-        "2️⃣ Sample Data": {
-            "Pregnancies": 2, "Glucose": 135, "BloodPressure": 82,
-            "SkinThickness": 28, "Insulin": 140, "BMI": 28.9,
-            "DPF": 0.78, "Age": 45
-        },
-    
-        "3️⃣ Sample Data": {
-            "Pregnancies": 6, "Glucose": 178, "BloodPressure": 90,
-            "SkinThickness": 35, "Insulin": 220, "BMI": 34.6,
-            "DPF": 1.45, "Age": 62
-        }
-    }
-
-    # -----------------------------------------------------
-    # 4️⃣ APPLY SELECTED SAMPLE DATA
-    # -----------------------------------------------------
-    # Copies selected sample values into session state
-    def apply_diabetes_sample(sample_name):
-        sample = DIABETES_SAMPLES.get(sample_name)
-        if sample:
-            for key, value in sample.items():
-                st.session_state[key] = value
-  
+   
     # -----------------------------------------------------
     # 5️⃣ PAGE HEADER & ACTION BUTTONS
     # -----------------------------------------------------
@@ -161,19 +125,7 @@ if (selected == 'Diabetes Prediction'):
     with col_btn2:      
         st.button("🧹 Clear", type="secondary", on_click=clear_form)
 
-    # -----------------------------------------------------
-    # 6️⃣ SAMPLE SELECTION DROPDOWN
-    # -----------------------------------------------------
-    sample_choice = st.selectbox(
-        "🧪 Load Sample Patient",
-        list(DIABETES_SAMPLES.keys()),
-        index=0
-    )
-
-    # Load sample data when selected
-    if sample_choice != "Select Sample":
-        apply_diabetes_sample(sample_choice)
-           
+   
     # -----------------------------------------------------
     # 7️⃣ DIABETES INPUT FORM
     # -----------------------------------------------------
@@ -296,43 +248,7 @@ if selected == 'Heart Disease Prediction':
     def clear_heart_form():
         for k, v in heart_defaults.items():
             st.session_state[k] = v
-    
-    # -----------------------------------------------------
-    # 3️⃣ SAMPLE DATA (FOR QUICK TESTING)
-    # -----------------------------------------------------
-    # Used to auto-fill realistic patient profiles
-    HEART_SAMPLES = {
-        "Select Sample": None,
-    
-        "1️⃣ Sample Data": {
-            "age": 25, "sex": 0, "cp": 0,  "trestbps": 108,
-            "chol": 165, "fbs": 0, "restecg": 0, "thalach": 190,
-            "exang": 0, "oldpeak": 0.0,  "slope": 1, "ca": 0, "thal": 0
-        },
-    
-        "2️⃣ Sample Data": {
-            "age": 52, "sex": 1, "cp": 2, "trestbps": 138,
-            "chol": 245, "fbs": 0, "restecg": 1, "thalach": 150,
-            "exang": 0, "oldpeak": 1.3, "slope": 1, "ca": 0, "thal": 1
-        },
-    
-        "3️⃣ Sample Data": {
-            "age": 67, "sex": 1, "cp": 3, "trestbps": 168,
-            "chol": 295, "fbs": 1,
-            "restecg": 2, "thalach": 118, "exang": 1,
-            "oldpeak": 2.9, "slope": 2, "ca": 2, "thal": 2
-        }
-    }
-
-    # -----------------------------------------------------
-    # 4️⃣ APPLY SELECTED SAMPLE
-    # -----------------------------------------------------
-    # Loads chosen sample data into session state
-    def apply_heart_sample(sample_name):
-        sample = HEART_SAMPLES.get(sample_name)
-        if sample:
-            for key, value in sample.items():
-                st.session_state[key] = value
+     
 
     # -----------------------------------------------------
     # 5️⃣ PAGE HEADER & ACTION BUTTONS
@@ -348,18 +264,7 @@ if selected == 'Heart Disease Prediction':
     with col_btn2:
         st.button("🧹 Clear", on_click=clear_heart_form)
 
-    # -----------------------------------------------------
-    # 6️⃣ SAMPLE SELECTION DROPDOWN
-    # -----------------------------------------------------
-    sample_choice = st.selectbox(
-        "🧪 Load Sample Patient",
-        list(HEART_SAMPLES.keys()),
-        index=0
-    )
-    
-    if sample_choice != "Select Sample":
-        apply_heart_sample(sample_choice)
-
+  
     # -----------------------------------------------------
     # 7️⃣ HEART DISEASE INPUT FORM
     # -----------------------------------------------------
@@ -439,36 +344,16 @@ if selected == 'Heart Disease Prediction':
                 slope, ca, thal
             ]]
 
-            # Probability prediction
-            proba = heart_disease_model.predict_proba(input_data)
-            risk = proba[0][1] * 100   # Probability of disease
-            safe = proba[0][0] * 100
-    
-            # -------------------------------------------------
-            # 🔟 RESULT VISUALIZATION
-            # -------------------------------------------------
-            st.subheader("📊 Risk Assessment")
-    
-            st.metric(
-                label="Heart Disease Risk",
-                value=f"{risk:.2f} %",
-                delta=f"{safe:.2f} % Healthy"
-            )
-    
-            st.progress(int(risk))
+            prediction = heart_disease_model.predict(input_data)
 
             # -------------------------------------------------
-            # 1️⃣1️⃣ RISK CATEGORY INTERPRETATION
+            # 🔟 RESULT DISPLAY
             # -------------------------------------------------
-            if risk >= 70:
-                st.error("🔴 High Risk of Heart Disease")
-            elif risk >= 40:
-                st.warning("🟠 Moderate Risk — medical consultation advised")
+            if prediction[0] == 1:
+                st.error("🔴 Heart Disease Detected")
             else:
-                st.success("🟢 Low Risk Detected")
-
-
-
+                st.success("🟢 No Heart Disease Detected")
+        
 
 # =========================================================
 # 🧠 PARKINSON’S DISEASE PREDICTION MODULE
@@ -504,73 +389,6 @@ if (selected == 'Parkinsons Prediction'):
             st.session_state[key] = val
 
     # -----------------------------------------------------
-    # 3️⃣ SAMPLE VOICE DATA (FOR DEMONSTRATION)
-    # -----------------------------------------------------
-    # Helps users test model using realistic voice patterns
-    PARKINSONS_SAMPLES = {
-        "Select Sample": None,
-    
-        "1️⃣ Sample Data": {
-            "fo": 120.0, "fhi": 150.0, "flo": 100.0,
-            "Jitter_percent": 0.003, "Jitter_Abs": 0.00002,
-            "RAP": 0.0015, "PPQ": 0.002, "DDP": 0.004,
-            "Shimmer": 0.015, "Shimmer_dB": 0.15,
-            "APQ3": 0.008, "APQ5": 0.009, "APQ": 0.012, "DDA": 0.024,
-            "NHR": 0.02, "HNR": 25.0,
-            "RPDE": 0.35, "DFA": 0.60,
-            "spread1": -6.0, "spread2": 0.15,
-            "D2": 2.1, "PPE": 0.08
-        },
-    
-        "2️⃣ Sample Data": {
-            "fo": 197.076, "fhi": 206.896, "flo":192.055,
-            "Jitter_percent": .00289, "Jitter_Abs": 0.00001,
-            "RAP": 0.00166, "PPQ": 0.00168, "DDP": 0.00498,
-            "Shimmer":  0.01098, "Shimmer_dB": 0.097,
-            "APQ3": 0.00563, "APQ5": 0.0068, "APQ": 0.00802, "DDA": 0.01689,
-            "NHR": 0.00339, "HNR": 26.775,
-            "RPDE": 0.422229, "DFA": 0.741367,
-            "spread1": -7.3483, "spread2": 0.177551,
-            "D2": 1.743867, "PPE": 0.085569           
-        },
-    
-        "3️⃣ Sample Data": {
-            "fo": 165.0, "fhi": 220.0, "flo": 90.0,
-            "Jitter_percent": 0.012, "Jitter_Abs": 0.00012,
-            "RAP": 0.006, "PPQ": 0.008, "DDP": 0.018,
-            "Shimmer": 0.060, "Shimmer_dB": 0.55,
-            "APQ3": 0.030, "APQ5": 0.035, "APQ": 0.045, "DDA": 0.090,
-            "NHR": 0.08, "HNR": 10.5,
-            "RPDE": 0.68, "DFA": 0.78,
-            "spread1": -3.5, "spread2": 0.32,
-            "D2": 3.4, "PPE": 0.32
-        },
-
-        "4️⃣ Sample Data": {
-            "fo": 198.383, "fhi": 215.203, "flo": 193.104,
-            "Jitter_percent": 0.00212, "Jitter_Abs": 0.00001,
-            "RAP": 0.00113, "PPQ": 0.00135, "DDP": 0.00339,
-            "Shimmer": 0.01263, "Shimmer_dB": 0.111,
-            "APQ3": 0.0064, "APQ5": 0.00825, "APQ": 0.00951, "DDA": 0.01919,
-            "NHR": 0.00119, "HNR": 30.775,
-            "RPDE": 0.465946, "DFA": 0.738703,
-            "spread1": -7.067931, "spread2": 0.175181,
-            "D2": 1.512275, "PPE": 0.09632
-        }
-    }
-
-    # -----------------------------------------------------
-    # 4️⃣ APPLY SELECTED SAMPLE DATA
-    # -----------------------------------------------------
-    # Loads selected voice sample into the form
-    def apply_parkinsons_sample(sample_name):
-        sample = PARKINSONS_SAMPLES.get(sample_name)
-        if sample:
-            for key, value in sample.items():
-                st.session_state[key] = value
-
-
-    # -----------------------------------------------------
     # 5️⃣ PAGE HEADER & CLEAR BUTTON
     # -----------------------------------------------------
     col_title, col_btn1, col_btn2 = st.columns([4, 1, 1])
@@ -584,17 +402,7 @@ if (selected == 'Parkinsons Prediction'):
     with col_btn2:
         st.button("🧹 Clear", type="secondary", on_click=clear_parkinsons_form)
 
-    # -----------------------------------------------------
-    # 6️⃣ SAMPLE SELECTION DROPDOWN
-    # -----------------------------------------------------
-    sample_choice = st.selectbox(
-        "🧪 Load Sample Voice Data",
-        list(PARKINSONS_SAMPLES.keys()),
-        index=0
-    )
     
-    if sample_choice != "Select Sample":
-        apply_parkinsons_sample(sample_choice)    
 
     # -----------------------------------------------------
     # 7️⃣ PARKINSON’S INPUT FORM      
@@ -699,5 +507,6 @@ if (selected == 'Parkinsons Prediction'):
            
 #------------ Mmain Content Section End--------------------    
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
