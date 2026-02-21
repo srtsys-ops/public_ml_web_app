@@ -16,40 +16,9 @@ Streamlit + Pickle Models
 # 📦 IMPORTS
 # =========================================================
 import pickle
-import base64
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-def load_css(file_path: str):
-    with open(file_path) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-        
-load_css("styles.css")
-# =========================================================
-# 🖼️ IMAGE UTILS
-# =========================================================
-def get_base64_image(image_path):
-    """Convert image to base64 for HTML rendering"""
-    with open(image_path, "rb") as img:
-        return base64.b64encode(img.read()).decode()
-
-logo_base64 = get_base64_image("periyar_logo.png")
-periyar_base64 = get_base64_image("periyar.jpg")
-# =========================================================
-# 🎨 BACKGROUND HELPER FOR EACH MODULE
-# =========================================================
-def set_bg(color1, color2):
-    """Set page background gradient"""
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background: linear-gradient(135deg, {color1}, {color2});
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    ) 
 # =========================================================
 # 🧠 LOAD ML MODELS
 # =========================================================
@@ -109,36 +78,8 @@ with st.sidebar:
         """,
         unsafe_allow_html=True
     )
-# =========================================================
-# 🎯 PAGE BACKGROUND PER MODULE
-# =========================================================
-if selected == "Diabetes Prediction":
-    set_bg("#0b132b", "#1c2541")
-elif selected == "Heart Disease Prediction":
-    set_bg("#4a0404", "#8b0000")
-else:
-    set_bg("#1f1147", "#5b2c83")
-# =========================================================
-# 🏫 FIXED HEADER
-# =========================================================
-st.markdown(f"""
-   <div class="fixed-header">
-        <div class="fixed-header-inner">
-            <img src="data:image/png;base64,{logo_base64}">
-            <div>
-                <h1>PERIYAR UNIVERSITY</h1>
-                <div class="scrolling-text">
-                    <h5>
-                        Name: THILAK S, 1st Year MSc Data Science | 
-                        Project Coordinator: Prof. Saravanan
-                    </h5>
-                </div>
-            </div>
-            <img src="data:image/png;base64,{periyar_base64}">
-        </div>
-    </div>
-    """, unsafe_allow_html=True
- )
+
+
 #------------ Mmain Content Section  Start--------------------
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
@@ -822,3 +763,4 @@ if (selected == 'Parkinsons Prediction'):
 
 #------------ Mmain Content Section End--------------------    
 st.markdown('</div>', unsafe_allow_html=True)
+
