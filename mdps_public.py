@@ -123,7 +123,7 @@ if (selected == 'Diabetes Prediction'):
         st.markdown("<br>", unsafe_allow_html=True)
            
     with col_btn2:      
-        st.button("🧹 Clear", type="secondary", on_click=clear_form)
+       # st.button("🧹 Clear", type="secondary", on_click=clear_form)
 
    
     # -----------------------------------------------------
@@ -262,7 +262,7 @@ if selected == 'Heart Disease Prediction':
         st.markdown("<br>", unsafe_allow_html=True)
             
     with col_btn2:
-        st.button("🧹 Clear", on_click=clear_heart_form)
+        #st.button("🧹 Clear", on_click=clear_heart_form)
 
   
     # -----------------------------------------------------
@@ -400,7 +400,7 @@ if (selected == 'Parkinsons Prediction'):
         st.markdown("<br>", unsafe_allow_html=True)
 
     with col_btn2:
-        st.button("🧹 Clear", type="secondary", on_click=clear_parkinsons_form)
+       # st.button("🧹 Clear", type="secondary", on_click=clear_parkinsons_form)
 
     
 
@@ -507,6 +507,7 @@ if (selected == 'Parkinsons Prediction'):
            
 #------------ Mmain Content Section End--------------------    
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
 
